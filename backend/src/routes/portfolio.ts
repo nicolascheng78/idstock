@@ -1,11 +1,13 @@
 import express from 'express';
 import { body } from 'express-validator';
 import { authenticate } from '../middleware/auth';
+import { authenticatedLimiter } from '../middleware/rateLimiter';
 import * as portfolioController from '../controllers/portfolioController';
 
 const router = express.Router();
 
 router.use(authenticate);
+router.use(authenticatedLimiter);
 
 router.get('/', portfolioController.getPortfolio);
 

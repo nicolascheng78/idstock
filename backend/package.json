@@ -10,39 +10,45 @@
     "lint": "eslint src --ext .ts",
     "test": "jest"
   },
-  "keywords": ["stock", "indonesian", "market", "api"],
+  "keywords": [
+    "stock",
+    "indonesian",
+    "market",
+    "api"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.7",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.35.1",
-    "axios": "^1.6.2",
-    "express-validator": "^7.0.1",
-    "nodemailer": "^6.9.7",
     "redis": "^4.6.11",
+    "sequelize": "^6.35.1",
     "ws": "^8.14.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.10.4",
-    "@types/cors": "^2.8.17",
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.11",
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.10.4",
     "@types/nodemailer": "^6.4.14",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
     "eslint": "^8.55.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "jest": "^29.7.0",
-    "@types/jest": "^29.5.11"
+    "typescript": "^5.3.3"
   }
 }
