@@ -1,10 +1,16 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import { User } from '../models';
 import { generateToken, generateVerificationToken } from '../utils/jwt';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../utils/email';
 
 export const signup = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { email, password, full_name, phone_number, profile_data } = req.body;
 
     // Check if user already exists
@@ -55,6 +61,11 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });

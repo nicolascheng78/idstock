@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { validationResult } from 'express-validator';
 import { AuthRequest } from '../middleware/auth';
 import { Portfolio, Transaction } from '../models';
 import { calculateNewAverage, calculateProfitLoss } from '../utils/calculator';
@@ -54,6 +55,11 @@ export const getPortfolio = async (req: AuthRequest, res: Response) => {
 
 export const addTransaction = async (req: AuthRequest, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const userId = req.userId!;
     const { stock_symbol, transaction_type, price, quantity, notes } = req.body;
 
@@ -103,15 +109,21 @@ export const addTransaction = async (req: AuthRequest, res: Response) => {
         where: { user_id: userId, stock_symbol },
       });
 
-      if (portfolio) {
-        portfolio.quantity -= quantity;
-        if (portfolio.quantity <= 0) {
-          await portfolio.destroy();
-        } else {
-          portfolio.total_investment = Number(portfolio.average_price) * portfolio.quantity;
-          portfolio.updated_at = new Date();
-          await portfolio.save();
-        }
+      if (!portfolio) {
+        return res.status(400).json({ error: 'No shares to sell for this stock' });
+      }
+
+      if (portfolio.quantity < quantity) {
+        return res.status(400).json({ error: 'Insufficient shares to sell' });
+      }
+
+      portfolio.quantity -= quantity;
+      if (portfolio.quantity <= 0) {
+        await portfolio.destroy();
+      } else {
+        portfolio.total_investment = Number(portfolio.average_price) * portfolio.quantity;
+        portfolio.updated_at = new Date();
+        await portfolio.save();
       }
     }
 
@@ -142,13 +154,18 @@ export const getTransactionHistory = async (req: AuthRequest, res: Response) => 
 
 export const calculateAverage = async (req: AuthRequest, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { old_avg_price, old_quantity, new_price, new_quantity } = req.body;
 
     const result = calculateNewAverage(old_avg_price, old_quantity, new_price, new_quantity);
 
     res.json(result);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Calculate average error:', error);
-    res.status(500).json({ error: 'Failed to calculate average' });
+    res.status(400).json({ error: error.message || 'Failed to calculate average' });
   }
 };

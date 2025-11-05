@@ -14,6 +14,11 @@ export const calculateNewAverage = (
 ): { newAverage: number; totalInvestment: number; totalQuantity: number } => {
   const totalInvestment = (oldAvgPrice * oldQuantity) + (newPrice * newQuantity);
   const totalQuantity = oldQuantity + newQuantity;
+  
+  if (totalQuantity === 0) {
+    throw new Error('Total quantity cannot be zero');
+  }
+  
   const newAverage = totalInvestment / totalQuantity;
   
   return {
@@ -38,7 +43,7 @@ export const calculateProfitLoss = (
   const totalCost = averagePrice * quantity;
   const totalValue = currentPrice * quantity;
   const absolutePL = totalValue - totalCost;
-  const percentagePL = (absolutePL / totalCost) * 100;
+  const percentagePL = totalCost > 0 ? (absolutePL / totalCost) * 100 : 0;
   
   return {
     absolutePL,
