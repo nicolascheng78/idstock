@@ -5,7 +5,7 @@ import crypto from 'crypto';
 export const generateToken = (userId: number): string => {
   return jwt.sign({ userId }, config.jwt.secret, {
     expiresIn: config.jwt.expiresIn,
-  });
+  } as jwt.SignOptions);
 };
 
 export const generateVerificationToken = (): string => {

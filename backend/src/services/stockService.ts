@@ -1,5 +1,6 @@
-import axios from 'axios';
-import config from '../config';
+// This is a mock implementation for demonstration
+// In production, replace with actual Indonesian stock market API integration
+// e.g., Yahoo Finance, Alpha Vantage, or IDX-specific APIs
 
 export interface StockData {
   symbol: string;

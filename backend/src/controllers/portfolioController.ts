@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { Portfolio, Transaction } from '../models';
 import { calculateNewAverage, calculateProfitLoss } from '../utils/calculator';
-import { getStockData, getMultipleStocks } from '../services/stockService';
+import { getMultipleStocks } from '../services/stockService';
 
 export const getPortfolio = async (req: AuthRequest, res: Response) => {
   try {

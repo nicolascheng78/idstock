@@ -55,7 +55,7 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { email, password, remember_me } = req.body;
+    const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
